@@ -76,6 +76,53 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  fonts:
+    - family: Reem Kufi
+      fonts:
+        - asset: assets/fonts/reem_kufi/ReemKufi-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/reem_kufi/ReemKufi-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/reem_kufi/ReemKufi-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/reem_kufi/ReemKufi-Bold.ttf
+          weight: 700
+    - family: Changa
+      fonts:
+        - asset: assets/fonts/changa/Changa-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/changa/Changa-Light.ttf
+          weight: 300
+        - asset: assets/fonts/changa/Changa-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/changa/Changa-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/changa/Changa-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/changa/Changa-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/changa/Changa-ExtraBold.ttf
+          weight: 800
+    - family: Noto Kufi Arabic
+      fonts:
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-Light.ttf
+          weight: 300
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/noto_kufi_arabic/NotoKufiArabic-Black.ttf
+          weight: 900
 
 flutter_launcher_icons:
   android: "launcher_icon"
