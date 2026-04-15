@@ -2,6 +2,10 @@
 class Assets {
   Assets._();
   
+  /// Assets for assetsImagesBeigePattern
+  /// assets/images/beige-pattern.webp
+  static const String assetsImagesBeigePattern = "assets/images/beige-pattern.webp";
+
   /// Assets for assetsImagesBg01
   /// assets/images/bg01.jpg
   static const String assetsImagesBg01 = "assets/images/bg01.jpg";

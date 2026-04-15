@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 class AppTheme {
@@ -7,16 +8,18 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: AppColors.primaryLight,
       scaffoldBackgroundColor: AppColors.backgroundLight,
+      dividerColor: AppColors.borderLight,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primaryLight,
         primaryContainer: AppColors.primaryLightVariant,
         secondary: AppColors.accentLight,
         secondaryContainer: AppColors.accentLightVariant,
         surface: AppColors.surfaceLight,
-        error: Colors.red,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
+        error: AppColors.dangerLight,
+        onPrimary: AppColors.primaryForegroundLight,
+        onSecondary: AppColors.accentForegroundLight,
         onSurface: AppColors.textPrimaryLight,
+        outline: AppColors.borderLight,
         onError: Colors.white,
       ),
       cardTheme: const CardThemeData(
@@ -39,17 +42,19 @@ class AppTheme {
       brightness: Brightness.dark,
       primaryColor: AppColors.primaryDark,
       scaffoldBackgroundColor: AppColors.backgroundDark,
+      dividerColor: AppColors.borderDark,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryDark,
         primaryContainer: AppColors.primaryLightVariantDark,
         secondary: AppColors.accentDark,
         secondaryContainer: AppColors.accentLightVariantDark,
         surface: AppColors.surfaceDark,
-        error: Colors.redAccent,
-        onPrimary: AppColors.textPrimaryLight, // Usually text on primary in dark mode is dark
-        onSecondary: AppColors.textPrimaryLight,
+        error: AppColors.dangerDark,
+        onPrimary: AppColors.primaryForegroundDark,
+        onSecondary: AppColors.accentForegroundDark,
         onSurface: AppColors.textPrimaryDark,
-        onError: Colors.black,
+        outline: AppColors.borderDark,
+        onError: AppColors.primaryForegroundDark,
       ),
       cardTheme: const CardThemeData(
         color: AppColors.surfaceDark,
