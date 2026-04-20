@@ -24,33 +24,68 @@ class _DashboardDropdownFieldState extends State<DashboardDropdownField> {
     final iconColor = colorScheme.onSurface.withValues(alpha: 0.72);
     final borderRadius = BorderRadius.circular(20);
 
-    return DropdownMenu<String>(
-      expandedInsets: EdgeInsets.zero,
-      enableFilter: true,
-      enableSearch: true,
-      requestFocusOnTap: true,
-      menuHeight: 250,
-      hintText: 'اختر السورة',
-      textStyle: textStyle,
-      trailingIcon: Icon(Icons.keyboard_arrow_down_rounded, color: iconColor),
-      selectedTrailingIcon: Icon(Icons.keyboard_arrow_up_rounded, color: iconColor),
-      inputDecorationTheme: _buildInputDecoration(colorScheme, textStyle, borderRadius),
-      menuStyle: _buildMenuStyle(colorScheme),
-      onSelected: (String? value) {
-        setState(() {
-          selectedValue = value;
-        });
+    return FormField<String>(
+      validator: (value) {
+        if (selectedValue == null) {
+          return 'يرجى اختيار السورة';
+        }
+        return null;
       },
-      dropdownMenuEntries: _buildEntries(textStyle),
+      builder: (FormFieldState<String> state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DropdownMenu<String>(
+              expandedInsets: EdgeInsets.zero,
+              enableFilter: true,
+              enableSearch: true,
+              requestFocusOnTap: true,
+              menuHeight: 250,
+              hintText: 'اختر السورة',
+              textStyle: textStyle,
+              trailingIcon: Icon(Icons.keyboard_arrow_down_rounded, color: iconColor),
+              selectedTrailingIcon: Icon(Icons.keyboard_arrow_up_rounded, color: iconColor),
+              inputDecorationTheme: _buildInputDecoration(
+                colorScheme,
+                textStyle,
+                borderRadius,
+                hasError: state.hasError,
+              ),
+              menuStyle: _buildMenuStyle(colorScheme),
+              onSelected: (String? value) {
+                setState(() {
+                  selectedValue = value;
+                });
+                state.didChange(value);
+              },
+              dropdownMenuEntries: _buildEntries(textStyle),
+            ),
+            if (state.hasError)
+              Padding(
+                padding: const EdgeInsets.only(top: 8, right: 12),
+                child: Text(
+                  state.errorText!,
+                  style: AppStyles.body2Regular14(context).copyWith(
+                    fontSize: getResponsiveFontSize(context, fontSize: 12),
+                    color: colorScheme.error,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
   InputDecorationTheme _buildInputDecoration(
     ColorScheme colorScheme,
     TextStyle textStyle,
-    BorderRadius borderRadius,
-  ) {
-    final outlineBorder = BorderSide(color: colorScheme.outline);
+    BorderRadius borderRadius, {
+    bool hasError = false,
+  }) {
+    final outlineBorder = BorderSide(
+      color: hasError ? colorScheme.error : colorScheme.outline,
+    );
 
     return InputDecorationTheme(
       filled: true,
@@ -72,7 +107,10 @@ class _DashboardDropdownFieldState extends State<DashboardDropdownField> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: borderRadius,
-        borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+        borderSide: BorderSide(
+          color: hasError ? colorScheme.error : colorScheme.primary,
+          width: 1.5,
+        ),
       ),
     );
   }
@@ -100,3 +138,4 @@ class _DashboardDropdownFieldState extends State<DashboardDropdownField> {
     }).toList();
   }
 }
+

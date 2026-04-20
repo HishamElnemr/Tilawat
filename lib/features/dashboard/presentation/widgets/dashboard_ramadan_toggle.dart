@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
 
 class DashboardRamadanToggle extends StatefulWidget {
-  const DashboardRamadanToggle({super.key});
+  const DashboardRamadanToggle({
+    super.key,
+    this.onChanged,
+    this.initialValue = false,
+  });
+
+  final ValueChanged<bool>? onChanged;
+  final bool initialValue;
 
   @override
   State<DashboardRamadanToggle> createState() => _DashboardRamadanToggleState();
 }
 
 class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
-  bool _isNoSelected = true;
+  late bool _isRamadan;
+
+  @override
+  void initState() {
+    super.initState();
+    _isRamadan = widget.initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +31,26 @@ class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
         Expanded(
           child: _ToggleButton(
             label: 'نعم',
-            isSelected: !_isNoSelected,
-            onTap: () => setState(() => _isNoSelected = false),
+            isSelected: _isRamadan,
+            onTap: () {
+              if (!_isRamadan) {
+                setState(() => _isRamadan = true);
+                widget.onChanged?.call(true);
+              }
+            },
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
           child: _ToggleButton(
             label: 'لا',
-            isSelected: _isNoSelected,
-            onTap: () => setState(() => _isNoSelected = true),
+            isSelected: !_isRamadan,
+            onTap: () {
+              if (_isRamadan) {
+                setState(() => _isRamadan = false);
+                widget.onChanged?.call(false);
+              }
+            },
           ),
         ),
       ],

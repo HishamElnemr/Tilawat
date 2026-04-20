@@ -40,9 +40,7 @@ class DashboardWelcomeCard extends StatelessWidget {
             'قم بإضافة تلاوة جديدة للتطبيق',
             style: AppStyles.body2Regular14(context).copyWith(
               fontSize: getResponsiveFontSize(context, fontSize: 15),
-              color: Theme.of(
-                context,
-              ).colorScheme.onPrimary.withValues(alpha: 0.9),
+              color: Theme.of(context).colorScheme.onPrimary,
               height: 1.75,
             ),
           ),

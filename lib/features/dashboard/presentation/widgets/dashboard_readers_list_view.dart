@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_readers_row.dart';
 
-class DashboardReadersField extends StatefulWidget {
-  const DashboardReadersField({super.key});
+class DashboardReadersListView extends StatefulWidget {
+  const DashboardReadersListView({super.key});
 
   @override
-  State<DashboardReadersField> createState() => _DashboardReadersFieldState();
+  State<DashboardReadersListView> createState() => _DashboardReadersListViewState();
 }
 
-class _DashboardReadersFieldState extends State<DashboardReadersField> {
+class _DashboardReadersListViewState extends State<DashboardReadersListView> {
   final List<TextEditingController> _controllers = [TextEditingController()];
 
   @override
