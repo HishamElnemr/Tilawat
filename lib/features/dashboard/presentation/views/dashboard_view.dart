@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tilawat/core/widgets/custom_main_app_bar.dart';
-import 'package:tilawat/features/dashboard/presentation/views/dashboard_view_body.dart';
+import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_view_body.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -9,7 +9,7 @@ class DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomMainAppBar(title: 'لوحة التحكم'),
+      appBar: const CustomMainAppBar(title: 'لوحة التحكم', showAction: true),
       body: const DashboardViewBody(),
     );
   }

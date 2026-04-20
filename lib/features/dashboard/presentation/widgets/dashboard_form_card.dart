@@ -26,7 +26,6 @@ class DashboardFormCard extends StatelessWidget {
         children: [
           Text(
             'إضافة تلاوة جديدة',
-            textAlign: TextAlign.right,
             style: AppStyles.heading3Bold18(context).copyWith(
               fontSize: getResponsiveFontSize(context, fontSize: 17),
               color: Theme.of(context).colorScheme.onSurface,
@@ -35,9 +34,9 @@ class DashboardFormCard extends StatelessWidget {
           const SizedBox(height: 16),
           const DashboardSectionLabel(text: 'اسم السورة'),
           const SizedBox(height: 8),
-          const DashboardDropdownField(hintText: 'اختر السورة'),
+          const DashboardDropdownField(),
           const SizedBox(height: 16),
-          const DashboardSectionLabel(text: 'القراء (0)'),
+          const DashboardSectionLabel(text: 'القراء'),
           const SizedBox(height: 8),
           const DashboardReadersField(),
           const SizedBox(height: 16),

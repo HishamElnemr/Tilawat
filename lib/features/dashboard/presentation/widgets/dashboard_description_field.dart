@@ -6,28 +6,51 @@ class DashboardDescriptionField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 124,
-      padding: const EdgeInsets.all(16),
-      alignment: Alignment.topRight,
-      decoration: BoxDecoration(
-        color: Color.alphaBlend(
-          Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
-          Theme.of(context).colorScheme.surface,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).colorScheme.outline),
+    final colorScheme = Theme.of(context).colorScheme;
+    final iconColor = colorScheme.onSurface.withValues(alpha: 0.72);
+    final fillColor = Color.alphaBlend(
+      colorScheme.outline.withValues(alpha: 0.22),
+      colorScheme.surface,
+    );
+    final borderRadius = BorderRadius.circular(20);
+
+    return TextFormField(
+      minLines: 5,
+      maxLines: null,
+      style: AppStyles.body2Regular14(context).copyWith(
+        fontSize: getResponsiveFontSize(context, fontSize: 15),
+        color: colorScheme.onSurface,
+        height: 1.5,
       ),
-      child: Text(
-        'أدخل وصف التلاوة...',
-        textAlign: TextAlign.right,
-        style: AppStyles.body2Regular14(context).copyWith(
+      decoration: InputDecoration(
+        hintText: 'أدخل وصف التلاوة... إن وُجد',
+        hintStyle: AppStyles.body2Regular14(context).copyWith(
           fontSize: getResponsiveFontSize(context, fontSize: 15),
-          color: Theme.of(
-            context,
-          ).colorScheme.onSurface.withValues(alpha: 0.72),
+          color: iconColor,
           height: 1.5,
+        ),
+        filled: true,
+        fillColor: fillColor,
+        contentPadding: const EdgeInsets.all(16),
+        border: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: colorScheme.outline),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: colorScheme.outline),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: colorScheme.error),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
       ),
     );

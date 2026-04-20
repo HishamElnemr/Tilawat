@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tilawat/core/routes/app_routes.dart';
 import 'package:tilawat/core/routes/routes_name.dart';
 import 'package:tilawat/core/theme/app_theme.dart';
@@ -25,7 +26,15 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            locale: Locale('ar'), // Set Arabic locale
+            locale: const Locale('ar'),
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('ar'),
+            ],
             title: 'القرآن الكريم',
             themeMode: SharedPrefs.getBool('isDark')
                 ? ThemeMode.dark

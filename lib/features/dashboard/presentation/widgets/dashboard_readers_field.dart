@@ -1,57 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:tilawat/core/utils/app_styles.dart';
+import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_readers_row.dart';
 
-class DashboardReadersField extends StatelessWidget {
+class DashboardReadersField extends StatefulWidget {
   const DashboardReadersField({super.key});
 
   @override
+  State<DashboardReadersField> createState() => _DashboardReadersFieldState();
+}
+
+class _DashboardReadersFieldState extends State<DashboardReadersField> {
+  final List<TextEditingController> _controllers = [TextEditingController()];
+
+  @override
+  void dispose() {
+    for (final controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addReader() {
+    setState(() {
+      _controllers.add(TextEditingController());
+    });
+  }
+
+  void _removeReader(int index) {
+    setState(() {
+      _controllers[index].dispose();
+      _controllers.removeAt(index);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 43,
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            alignment: Alignment.centerRight,
-            decoration: BoxDecoration(
-              color: Color.alphaBlend(
-                Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
-                Theme.of(context).colorScheme.surface,
-              ),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Theme.of(context).colorScheme.outline),
-            ),
-            child: Text(
-              'أدخل اسم القارئ',
-              textAlign: TextAlign.right,
-              style: AppStyles.body2Regular14(context).copyWith(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.72),
-              ),
-            ),
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: _controllers.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: index < _controllers.length - 1 ? 8 : 0,
           ),
-        ),
-        const SizedBox(width: 8),
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Color.alphaBlend(
-              Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
-              Theme.of(context).colorScheme.surface,
-            ),
-            borderRadius: BorderRadius.circular(16),
+          child: DashboardReadersRow(
+            controller: _controllers[index],
+            onTap: _addReader,
+            onDelete: () => _removeReader(index),
+            showDelete: _controllers.length > 1,
           ),
-          child: Icon(
-            Icons.add,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.72),
-            size: 20,
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

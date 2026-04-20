@@ -6,14 +6,10 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomMainAppBar({
     super.key,
     required this.title,
-    this.onActionPressed,
-    this.showLogo = true,
-    this.showAction = true,
+    this.showAction = false,
   });
 
   final String title;
-  final VoidCallback? onActionPressed;
-  final bool showLogo;
   final bool showAction;
 
   @override
@@ -35,51 +31,53 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       titleSpacing: 20,
-      title: Directionality(
-        textDirection: TextDirection.ltr,
-        child: Row(
-          children: [
-            if (showLogo)
-              Image.asset(Assets.assetsImagesLogo, width: 36, height: 36),
-            const Spacer(),
-            Text(
-              title,
-              style: AppStyles.heading3Bold18(context).copyWith(
-                fontSize: getResponsiveFontSize(context, fontSize: 17),
-                color: Theme.of(context).colorScheme.onSurface,
+      title: Row(
+        children: [
+          if (showAction)
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color.alphaBlend(
+                  Theme.of(context).colorScheme.outline.withValues(alpha: 0.30),
+                  Theme.of(context).colorScheme.surface,
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: SizedBox(
+                width: 34,
+                height: 34,
+                child: IconButton(
+                  onPressed: () {
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: 18,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.75),
+                  ),
+                ),
               ),
             ),
-            if (showAction) ...[
-              const SizedBox(width: 12),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color.alphaBlend(
-                    Theme.of(
-                      context,
-                    ).colorScheme.outline.withValues(alpha: 0.30),
-                    Theme.of(context).colorScheme.surface,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: SizedBox(
-                  width: 34,
-                  height: 34,
-                  child: IconButton(
-                    onPressed: onActionPressed ?? () {},
-                    padding: EdgeInsets.zero,
-                    icon: Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 18,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.75),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
+          SizedBox(width: 8),
+          Text(
+            title,
+            style: AppStyles.heading3Bold18(context).copyWith(
+              fontSize: getResponsiveFontSize(context, fontSize: 17),
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          const Spacer(),
+          Image.asset(
+            Assets.assetsImagesLogoMain,
+            width: 50,
+            height: 50,
+            fit: BoxFit.contain,
+          ),
+        ],
       ),
     );
   }

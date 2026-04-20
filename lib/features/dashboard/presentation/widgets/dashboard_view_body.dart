@@ -9,20 +9,17 @@ class DashboardViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 28),
       child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 420),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              DashboardWelcomeCard(),
-              SizedBox(height: 20),
-              DashboardFormCard(),
-              SizedBox(height: 20),
-              DashboardLogoutButton(),
-            ],
-          ),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            DashboardWelcomeCard(),
+            SizedBox(height: 20),
+            DashboardFormCard(),
+            SizedBox(height: 20),
+            DashboardLogoutButton(),
+          ],
         ),
       ),
     );

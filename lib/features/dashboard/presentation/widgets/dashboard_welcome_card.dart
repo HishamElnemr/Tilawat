@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tilawat/core/utils/app_images.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
 
 class DashboardWelcomeCard extends StatelessWidget {
@@ -11,6 +12,11 @@ class DashboardWelcomeCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
+        image: const DecorationImage(
+          image: AssetImage(Assets.assetsImagesBg01),
+          fit: BoxFit.cover,
+          opacity: 0.04,
+        ),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -21,7 +27,7 @@ class DashboardWelcomeCard extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'مرحباً بك',

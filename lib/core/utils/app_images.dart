@@ -2,10 +2,6 @@
 class Assets {
   Assets._();
   
-  /// Assets for assetsImagesBeigePattern
-  /// assets/images/beige-pattern.webp
-  static const String assetsImagesBeigePattern = "assets/images/beige-pattern.webp";
-
   /// Assets for assetsImagesBg01
   /// assets/images/bg01.jpg
   static const String assetsImagesBg01 = "assets/images/bg01.jpg";
@@ -25,5 +21,9 @@ class Assets {
   /// Assets for assetsImagesSplashShape01
   /// assets/images/splash_shape01.svg
   static const String assetsImagesSplashShape01 = "assets/images/splash_shape01.svg";
+
+  /// Assets for assetsImagesTrash
+  /// assets/images/trash.svg
+  static const String assetsImagesTrash = "assets/images/trash.svg";
 }
 
