@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_core/core.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
 
 class DashboardRamadanToggle extends StatefulWidget {
   const DashboardRamadanToggle({
     super.key,
     this.onChanged,
+    this.onDateChanged,
     this.initialValue = false,
   });
 
   final ValueChanged<bool>? onChanged;
+  final ValueChanged<HijriDateTime>? onDateChanged;
   final bool initialValue;
 
   @override
@@ -17,6 +21,7 @@ class DashboardRamadanToggle extends StatefulWidget {
 
 class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
   late bool _isRamadan;
+  final HijriDatePickerController _dateController = HijriDatePickerController();
 
   @override
   void initState() {
@@ -25,33 +30,105 @@ class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
   }
 
   @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
       children: [
-        Expanded(
-          child: _ToggleButton(
-            label: 'نعم',
-            isSelected: _isRamadan,
-            onTap: () {
-              if (!_isRamadan) {
-                setState(() => _isRamadan = true);
-                widget.onChanged?.call(true);
-              }
-            },
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: _ToggleButton(
+                label: 'نعم',
+                isSelected: _isRamadan,
+                onTap: () {
+                  if (!_isRamadan) {
+                    setState(() => _isRamadan = true);
+                    widget.onChanged?.call(true);
+                  }
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _ToggleButton(
+                label: 'لا',
+                isSelected: !_isRamadan,
+                onTap: () {
+                  if (_isRamadan) {
+                    setState(() => _isRamadan = false);
+                    widget.onChanged?.call(false);
+                  }
+                },
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _ToggleButton(
-            label: 'لا',
-            isSelected: !_isRamadan,
-            onTap: () {
-              if (_isRamadan) {
-                setState(() => _isRamadan = false);
-                widget.onChanged?.call(false);
-              }
-            },
-          ),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: _isRamadan
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Color.alphaBlend(
+                        colorScheme.outline.withValues(alpha: 0.22),
+                        colorScheme.surface,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: colorScheme.outline),
+                    ),
+                    child: SfHijriDateRangePicker(
+                      controller: _dateController,
+                      view: HijriDatePickerView.month,
+                      selectionMode: DateRangePickerSelectionMode.single,
+                      headerStyle: DateRangePickerHeaderStyle(
+                        textAlign: TextAlign.center,
+                        textStyle: AppStyles.body1Medium16(context).copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      monthCellStyle: HijriDatePickerMonthCellStyle(
+                        textStyle: AppStyles.body2Regular14(context).copyWith(
+                          color: colorScheme.onSurface,
+                        ),
+                        todayTextStyle:
+                            AppStyles.body2Regular14(context).copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        disabledDatesTextStyle:
+                            AppStyles.body2Regular14(context).copyWith(
+                          color: colorScheme.onSurface.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      selectionColor: colorScheme.primary,
+                      selectionTextStyle:
+                          AppStyles.body2Regular14(context).copyWith(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      todayHighlightColor: colorScheme.primary,
+                      backgroundColor: Colors.transparent,
+                      onSelectionChanged:
+                          (DateRangePickerSelectionChangedArgs args) {
+                        if (args.value is HijriDateTime) {
+                          widget.onDateChanged?.call(args.value);
+                        }
+                      },
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
         ),
       ],
     );
@@ -108,3 +185,4 @@ class _ToggleButton extends StatelessWidget {
     );
   }
 }
+
