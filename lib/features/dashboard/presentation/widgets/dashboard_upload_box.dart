@@ -1,55 +1,83 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:tilawat/core/utils/app_styles.dart';
 
-class DashboardUploadBox extends StatelessWidget {
-  const DashboardUploadBox({super.key});
+import 'dashboard_upload_default_state.dart';
+import 'dashboard_upload_loading_state.dart';
+import 'dashboard_upload_success_state.dart';
+
+class DashboardUploadBox extends StatefulWidget {
+  const DashboardUploadBox({super.key, this.onChanged});
+
+  final ValueChanged<PlatformFile?>? onChanged;
+
+  @override
+  State<DashboardUploadBox> createState() => _DashboardUploadBoxState();
+}
+
+class _DashboardUploadBoxState extends State<DashboardUploadBox> {
+  FilePickerResult? result;
+  bool isLoading = false;
+
+  Future<void> _pickAudio() async {
+    setState(() => isLoading = true);
+
+    final picked = await FilePicker.pickFiles(type: FileType.audio);
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        if (picked != null) {
+          result = picked;
+          widget.onChanged?.call(picked.files.single);
+        }
+      });
+    }
+  }
+
+  void _removeFile() {
+    setState(() {
+      result = null;
+      widget.onChanged?.call(null);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 143,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      decoration: BoxDecoration(
-        color: Color.alphaBlend(
-          Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
-          Theme.of(context).colorScheme.surface,
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return GestureDetector(
+      onTap: (isLoading || result != null) ? null : _pickAudio,
+      child: Container(
+        width: double.infinity,
+        height: 143,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        decoration: BoxDecoration(
+          color: Color.alphaBlend(
+            colorScheme.outline.withValues(alpha: 0.22),
+            colorScheme.surface,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: colorScheme.outline),
         ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).colorScheme.outline),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.file_upload_outlined,
-            size: 32,
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.72),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'اضغط لرفع ملف صوتي',
-            textAlign: TextAlign.center,
-            style: AppStyles.body1SemiBold16(context).copyWith(
-              fontSize: getResponsiveFontSize(context, fontSize: 15),
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'MP3, WAV, OGG, M4A',
-            textAlign: TextAlign.center,
-            style: AppStyles.captionRegular12(context).copyWith(
-              fontSize: getResponsiveFontSize(context, fontSize: 13),
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.65),
-            ),
-          ),
-        ],
+        child: _buildContent(colorScheme),
       ),
     );
+  }
+
+  Widget _buildContent(ColorScheme colorScheme) {
+    if (isLoading) {
+      return DashboardUploadLoadingState(colorScheme: colorScheme);
+    }
+
+    if (result != null) {
+      return DashboardUploadSuccessState(
+        fileName: result!.files.single.name,
+        colorScheme: colorScheme,
+        onPickAudio: _pickAudio,
+        onRemoveFile: _removeFile,
+      );
+    }
+
+    return DashboardUploadDefaultState(colorScheme: colorScheme);
   }
 }

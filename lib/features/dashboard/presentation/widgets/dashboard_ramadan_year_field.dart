@@ -1,40 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
 
-class DashboardDescriptionField extends StatelessWidget {
-  const DashboardDescriptionField({super.key, this.controller});
+class DashboardRamadanYearField extends StatelessWidget {
+  const DashboardRamadanYearField({
+    super.key,
+    required this.controller,
+  });
 
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final iconColor = colorScheme.onSurface.withValues(alpha: 0.72);
+    final borderRadius = BorderRadius.circular(16);
     final fillColor = Color.alphaBlend(
       colorScheme.outline.withValues(alpha: 0.22),
       colorScheme.surface,
     );
-    final borderRadius = BorderRadius.circular(20);
 
     return TextFormField(
       controller: controller,
-      minLines: 5,
-      maxLines: null,
+      keyboardType: TextInputType.number,
       style: AppStyles.body2Regular14(context).copyWith(
-        fontSize: getResponsiveFontSize(context, fontSize: 15),
         color: colorScheme.onSurface,
-        height: 1.5,
       ),
       decoration: InputDecoration(
-        hintText: 'أدخل وصف التلاوة... إن وُجد',
+        hintText: 'عام (1445) ه',
         hintStyle: AppStyles.body2Regular14(context).copyWith(
-          fontSize: getResponsiveFontSize(context, fontSize: 15),
           color: iconColor,
-          height: 1.5,
         ),
         filled: true,
         fillColor: fillColor,
-        contentPadding: const EdgeInsets.all(16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
         border: OutlineInputBorder(
           borderRadius: borderRadius,
           borderSide: BorderSide(color: colorScheme.outline),
@@ -46,14 +45,6 @@ class DashboardDescriptionField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: borderRadius,
           borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: BorderSide(color: colorScheme.error),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: borderRadius,
-          borderSide: BorderSide(color: colorScheme.error, width: 1.5),
         ),
       ),
     );

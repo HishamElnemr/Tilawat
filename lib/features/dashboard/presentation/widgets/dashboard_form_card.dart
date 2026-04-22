@@ -1,5 +1,12 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
+import 'package:tilawat/features/dashboard/data/models/upload_tilawah_request.dart';
+import 'package:tilawat/features/dashboard/presentation/cubits/upload_data_cubit.dart';
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_description_field.dart';
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_dropdown_field.dart';
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_ramadan_toggle.dart';
@@ -17,10 +24,51 @@ class DashboardFormCard extends StatefulWidget {
 
 class _DashboardFormCardState extends State<DashboardFormCard> {
   final _formKey = GlobalKey<FormState>();
+  final _descriptionController = TextEditingController();
+
+  // Form data holders
+  String? _selectedSurah;
+  List<String> _reciters = [];
+  bool _isRamadan = false;
+  String? _ramadanDay;
+  String _ramadanYear = '';
+  PlatformFile? _audioFile;
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Form is valid — handle submission
+      if (_audioFile == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('يرجى رفع ملف صوتي')));
+        return;
+      }
+
+      // Build the Ramadan date string (e.g. "15 رمضان 1447")
+      String? date;
+      if (_isRamadan && _ramadanDay != null && _ramadanYear.isNotEmpty) {
+        date = '$_ramadanDay $_ramadanYear';
+      }
+
+      final request = UploadTilawahRequest(
+        audio: File(_audioFile!.path!),
+        surahName: _selectedSurah!,
+        reciters: _reciters.join(', '),
+        isRamadan: _isRamadan ? 'true' : 'false',
+        description: _descriptionController.text.isNotEmpty
+            ? _descriptionController.text
+            : null,
+        date: date,
+      );
+
+      context.read<UploadDataCubit>().uploadData(uploadDataRequest: request);
+
+      log('Uploaded Successfuly');
     }
   }
 
@@ -49,23 +97,33 @@ class _DashboardFormCardState extends State<DashboardFormCard> {
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'اسم السورة'),
             const SizedBox(height: 8),
-            const DashboardDropdownField(),
+            DashboardDropdownField(
+              onChanged: (value) => _selectedSurah = value,
+            ),
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'القراء'),
             const SizedBox(height: 8),
-            const DashboardReadersListView(),
+            DashboardReadersListView(
+              onChanged: (readers) => _reciters = readers,
+            ),
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'هل هي من ليالي رمضان؟'),
             const SizedBox(height: 8),
-            const DashboardRamadanToggle(),
+            DashboardRamadanToggle(
+              onChanged: (value) => _isRamadan = value,
+              onDateSelected: (day, year) {
+                _ramadanDay = day;
+                _ramadanYear = year;
+              },
+            ),
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'رفع التلاوة'),
             const SizedBox(height: 8),
-            const DashboardUploadBox(),
+            DashboardUploadBox(onChanged: (file) => _audioFile = file),
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'الوصف'),
             const SizedBox(height: 8),
-            const DashboardDescriptionField(),
+            DashboardDescriptionField(controller: _descriptionController),
             const SizedBox(height: 16),
             DashboardSubmitButton(onPressed: _submitForm),
           ],
@@ -74,4 +132,3 @@ class _DashboardFormCardState extends State<DashboardFormCard> {
     );
   }
 }
-

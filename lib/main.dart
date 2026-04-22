@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tilawat/core/routes/app_routes.dart';
 import 'package:tilawat/core/routes/routes_name.dart';
+import 'package:tilawat/core/services/getit_services.dart';
 import 'package:tilawat/core/theme/app_theme.dart';
 import 'package:tilawat/core/theme/cubit/change_theme_cubit.dart';
 import 'package:tilawat/core/theme/cubit/change_theme_state.dart';
@@ -11,6 +12,7 @@ import 'package:tilawat/core/utils/shared_prefs.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs.init();
+  setup();
 
   runApp(const MyApp());
 }
@@ -32,9 +34,7 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale('ar'),
-            ],
+            supportedLocales: const [Locale('ar')],
             title: 'القرآن الكريم',
             themeMode: SharedPrefs.getBool('isDark')
                 ? ThemeMode.dark

@@ -3,7 +3,9 @@ import 'package:tilawat/core/utils/app_styles.dart';
 import 'package:tilawat/core/utils/quran_surahs.dart';
 
 class DashboardDropdownField extends StatefulWidget {
-  const DashboardDropdownField({super.key});
+  const DashboardDropdownField({super.key, this.onChanged});
+
+  final ValueChanged<String?>? onChanged;
 
   @override
   State<DashboardDropdownField> createState() => _DashboardDropdownFieldState();
@@ -57,6 +59,7 @@ class _DashboardDropdownFieldState extends State<DashboardDropdownField> {
                   selectedValue = value;
                 });
                 state.didChange(value);
+                widget.onChanged?.call(value);
               },
               dropdownMenuEntries: _buildEntries(textStyle),
             ),
