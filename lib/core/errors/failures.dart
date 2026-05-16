@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 abstract class Failure {
@@ -9,6 +11,13 @@ class ServerFailure extends Failure {
   ServerFailure(super.errMessage);
 
   factory ServerFailure.fromDioException(DioException dioException) {
+    log(
+      '[FAILURE][DIO] type=${dioException.type} '
+      'status=${dioException.response?.statusCode} '
+      'message=${dioException.message}',
+    );
+    log('[FAILURE][DIO][RESPONSE] ${dioException.response?.data}');
+
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
         return ServerFailure('Connection timeout with API');
@@ -28,7 +37,8 @@ class ServerFailure extends Failure {
       case DioExceptionType.connectionError:
         return ServerFailure('No Internet Connection');
       case DioExceptionType.unknown:
-        if (dioException.message != null && dioException.message!.contains('SocketException')) {
+        if (dioException.message != null &&
+            dioException.message!.contains('SocketException')) {
           return ServerFailure('No Internet Connection');
         }
         return ServerFailure('Unexpected Error, Please try again!');
@@ -36,9 +46,17 @@ class ServerFailure extends Failure {
   }
 
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
-    if (statusCode == 400 || statusCode == 401 || statusCode == 403 || statusCode == 422) {
+    log('[FAILURE][RESPONSE] status=$statusCode body=$response');
+
+    if (statusCode == 400 ||
+        statusCode == 401 ||
+        statusCode == 403 ||
+        statusCode == 422) {
       if (response is Map<String, dynamic>) {
-        final errorMsg = response['message'] ?? response['error'] ?? 'Authentication or validation error ($statusCode)';
+        final errorMsg =
+            response['message'] ??
+            response['error'] ??
+            'Authentication or validation error ($statusCode)';
         return ServerFailure(errorMsg.toString());
       }
       return ServerFailure('Request failed with status code $statusCode');

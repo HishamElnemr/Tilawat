@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_ramadan_day_dropdown.dart';
-import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_ramadan_year_field.dart';
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_toggle_button.dart';
 
 class DashboardRamadanToggle extends StatefulWidget {
   const DashboardRamadanToggle({
     super.key,
     this.onChanged,
-    this.onDateSelected,
     this.initialValue = false,
   });
 
   final ValueChanged<bool>? onChanged;
-  final void Function(String? day, String year)? onDateSelected;
   final bool initialValue;
 
   @override
@@ -21,9 +17,6 @@ class DashboardRamadanToggle extends StatefulWidget {
 
 class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
   late bool _isRamadan;
-  String? _selectedDay;
-  final TextEditingController _dayController = TextEditingController();
-  final TextEditingController _yearController = TextEditingController();
 
   @override
   void initState() {
@@ -32,25 +25,8 @@ class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
   }
 
   @override
-  void dispose() {
-    _dayController.dispose();
-    _yearController.dispose();
-    super.dispose();
-  }
-
-  void _notifyDateChanged() {
-    widget.onDateSelected?.call(_selectedDay, _yearController.text);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildToggleRow(),
-        _buildDateFields(),
-      ],
-    );
+    return _buildToggleRow();
   }
 
   Widget _buildToggleRow() {
@@ -82,40 +58,6 @@ class _DashboardRamadanToggleState extends State<DashboardRamadanToggle> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildDateFields() {
-    return AnimatedSize(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      child: _isRamadan
-          ? Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: DashboardRamadanDayDropdown(
-                      controller: _dayController,
-                      onSelected: (String? value) {
-                        setState(() => _selectedDay = value);
-                        _notifyDateChanged();
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: DashboardRamadanYearField(
-                      controller: _yearController,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : const SizedBox.shrink(),
     );
   }
 }

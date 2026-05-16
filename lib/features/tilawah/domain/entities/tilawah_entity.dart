@@ -6,18 +6,16 @@ class TilawahEntity {
   final String audioUrl;
   final String publicId;
   final String? description;
-  final String? date;
   final DateTime createdAt;
 
   TilawahEntity({
     required this.id,
     required this.surahName,
-    required this.reciters,
+    required List<String> reciters,
     required this.isRamadan,
     required this.audioUrl,
     required this.publicId,
     this.description,
-    this.date,
     required this.createdAt,
-  });
+  }) : reciters = List<String>.unmodifiable(reciters);
 }

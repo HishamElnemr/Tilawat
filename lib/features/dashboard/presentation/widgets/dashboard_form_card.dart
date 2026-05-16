@@ -1,10 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
+import 'package:tilawat/features/auth/domain/entities/login_response_entity.dart';
 import 'package:tilawat/features/dashboard/data/models/upload_tilawah_request.dart';
 import 'package:tilawat/features/dashboard/presentation/cubits/upload_data_cubit.dart';
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_description_field.dart';
@@ -16,7 +16,9 @@ import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_submit
 import 'package:tilawat/features/dashboard/presentation/widgets/dashboard_upload_box.dart';
 
 class DashboardFormCard extends StatefulWidget {
-  const DashboardFormCard({super.key});
+  const DashboardFormCard({super.key, required this.token});
+
+  final LoginResponseEntity token;
 
   @override
   State<DashboardFormCard> createState() => _DashboardFormCardState();
@@ -30,8 +32,6 @@ class _DashboardFormCardState extends State<DashboardFormCard> {
   String? _selectedSurah;
   List<String> _reciters = [];
   bool _isRamadan = false;
-  String? _ramadanDay;
-  String _ramadanYear = '';
   PlatformFile? _audioFile;
 
   @override
@@ -41,35 +41,47 @@ class _DashboardFormCardState extends State<DashboardFormCard> {
   }
 
   void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      if (_audioFile == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('يرجى رفع ملف صوتي')));
-        return;
-      }
-
-      // Build the Ramadan date string (e.g. "15 رمضان 1447")
-      String? date;
-      if (_isRamadan && _ramadanDay != null && _ramadanYear.isNotEmpty) {
-        date = '$_ramadanDay $_ramadanYear';
-      }
-
-      final request = UploadTilawahRequest(
-        audio: File(_audioFile!.path!),
-        surahName: _selectedSurah!,
-        reciters: _reciters.join(', '),
-        isRamadan: _isRamadan ? 'true' : 'false',
-        description: _descriptionController.text.isNotEmpty
-            ? _descriptionController.text
-            : null,
-        date: date,
-      );
-
-      context.read<UploadDataCubit>().uploadData(uploadDataRequest: request);
-
-      log('Uploaded Successfuly');
+    if (!_formKey.currentState!.validate()) {
+      return;
     }
+
+    if (_selectedSurah == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('يرجى اختيار اسم السورة')));
+      return;
+    }
+
+    if (_audioFile == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('يرجى رفع ملف صوتي')));
+      return;
+    }
+
+    final String surahName = _selectedSurah!;
+    final List<String> reciters = List<String>.from(_reciters);
+    final bool isRamadan = _isRamadan;
+    final String descriptionText = _descriptionController.text.trim();
+    final String? description = descriptionText.isNotEmpty
+        ? descriptionText
+        : null;
+
+    final String audioPath = _audioFile!.path!;
+    final File audio = File(audioPath);
+
+    final UploadTilawahRequest request = UploadTilawahRequest(
+      audio: audio,
+      surahName: surahName,
+      reciters: reciters,
+      isRamadan: isRamadan,
+      description: description,
+    );
+
+    context.read<UploadDataCubit>().uploadData(
+      uploadDataRequest: request,
+      token: widget.token,
+    );
   }
 
   @override
@@ -109,13 +121,7 @@ class _DashboardFormCardState extends State<DashboardFormCard> {
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'هل هي من ليالي رمضان؟'),
             const SizedBox(height: 8),
-            DashboardRamadanToggle(
-              onChanged: (value) => _isRamadan = value,
-              onDateSelected: (day, year) {
-                _ramadanDay = day;
-                _ramadanYear = year;
-              },
-            ),
+            DashboardRamadanToggle(onChanged: (value) => _isRamadan = value),
             const SizedBox(height: 16),
             const DashboardSectionLabel(text: 'رفع التلاوة'),
             const SizedBox(height: 8),

@@ -1,4 +1,4 @@
-import 'package:tilawat/features/dashboard/domain/entities/tilawah_entity.dart';
+import 'package:tilawat/features/tilawah/domain/entities/tilawah_entity.dart';
 
 class UploadDataStates {}
 

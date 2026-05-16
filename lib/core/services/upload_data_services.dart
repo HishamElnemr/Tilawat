@@ -1,18 +1,28 @@
 import 'package:dio/dio.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:tilawat/core/constants/api_constants.dart';
-import 'package:tilawat/features/dashboard/data/models/tilawah_model.dart';
 import 'package:tilawat/features/dashboard/data/models/upload_tilawah_request.dart';
+import 'package:tilawat/features/tilawah/data/models/tilawah_model.dart';
 
-part 'upload_data_services.g.dart';
+class UploadDataServices {
+  final Dio _dio;
 
-@RestApi(baseUrl: ApiConstants.baseUrl)
-abstract class UploadDataServices {
-  factory UploadDataServices(Dio dio) = _UploadDataServices;
+  UploadDataServices(this._dio);
 
-  @POST('/recitations')
-  @MultiPart()
   Future<TilawahModel> uploadTilawah({
-    @Body() required UploadTilawahRequest request,
-  });
+    required String token,
+    required UploadTilawahRequest request,
+  }) async {
+    final FormData formData = await request.toFormData();
+
+    final response = await _dio.post(
+      '/api/recitations',
+      data: formData,
+      options: Options(
+        headers: {
+          'Authorization': token,
+        },
+      ),
+    );
+
+    return TilawahModel.fromJson(response.data as Map<String, dynamic>);
+  }
 }
