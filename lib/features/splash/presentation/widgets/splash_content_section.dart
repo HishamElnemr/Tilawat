@@ -14,24 +14,26 @@ class SplashContentSection extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(Assets.assetsImagesLogoMain, width: 136, height: 136),
-            const SizedBox(height: 18),
+            Image.asset(Assets.assetsImagesLogoMain, width: 140, height: 140),
+            const SizedBox(height: 8),
             Text(
               'تـلاوات',
               style: AppStyles.reemHeading28(context).copyWith(
-                color: const Color(0xFFF4F5F4),
+                color: Colors.white,
                 fontWeight: FontWeight.w700,
+                fontSize: getResponsiveFontSize(context, fontSize: 44),
+                letterSpacing: 1.4,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
-            SvgPicture.asset(Assets.assetsImagesSplashShape01, width: 120),
-            const SizedBox(height: 12),
+            SvgPicture.asset(Assets.assetsImagesSplashShape01),
+            const SizedBox(height: 8),
             Text(
               'كفر بهيدة',
               style: AppStyles.reemHeading24(context).copyWith(
-                color: const Color(0xFFDCE6E0),
-                fontWeight: FontWeight.w500,
+                color: Colors.white.withValues(alpha: 0.9),
+                fontWeight: FontWeight.normal,
+                fontSize: getResponsiveFontSize(context, fontSize: 22),
               ),
               textAlign: TextAlign.center,
             ),
