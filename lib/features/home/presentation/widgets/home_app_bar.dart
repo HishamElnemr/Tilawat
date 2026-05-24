@@ -6,8 +6,8 @@ import 'package:tilawat/core/theme/cubit/change_theme_cubit.dart';
 import 'package:tilawat/core/utils/app_images.dart';
 import 'package:tilawat/core/utils/app_styles.dart';
 
-class HomeHeader extends StatelessWidget implements PreferredSizeWidget {
-  const HomeHeader({super.key});
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const HomeAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(49);
@@ -35,7 +35,7 @@ class HomeHeader extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const _TitleLogo(),
+            Expanded(child: const _TitleLogo()),
             Directionality(
               textDirection: TextDirection.ltr,
               child: Row(
@@ -89,13 +89,17 @@ class _TitleLogo extends StatelessWidget {
           fit: BoxFit.contain,
         ),
         const SizedBox(width: 8),
-        Text(
-          'تِلاوَات كَفْر بِهِيدَة',
-          style: AppStyles.heading3Bold18(context).copyWith(
-            fontSize: getResponsiveFontSize(context, fontSize: 17),
-            color: iconColor,
-            letterSpacing: 0.17,
-            height: 1.3,
+        Flexible(
+          child: Text(
+            'تِلاوَات كَفْر بِهِيدَة',
+            maxLines: 2,
+            softWrap: true,
+            style: AppStyles.heading3Bold18(context).copyWith(
+              fontSize: getResponsiveFontSize(context, fontSize: 17),
+              color: iconColor,
+              letterSpacing: 0.17,
+              height: 1.3,
+            ),
           ),
         ),
       ],

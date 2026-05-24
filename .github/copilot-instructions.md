@@ -31,9 +31,10 @@ We utilize the `get_it` package for service location and dependency injection.
 - All global singletons, factories, repositories, network clients, and Cubits/ViewModels must be registered inside `lib/core/services/getit_services.dart`.
 - Whenever you introduce a new data source, repository, or state manager that requires registration, you MUST update `getit_services.dart` immediately to prevent runtime dependency issues.
 
-## 🎨 4. Theming, UI, and Assets
-This app supports **Dark and Light modes**. Hardcoded colors/styles are strictly forbidden.
+## 🎨 4. Theming, UI, Localization and Assets
+This app supports **Dark and Light modes** and is naturally configured for **Arabic (RTL) localization**.
 
+- **RTL & Localization**: The app is set to Arabic (RTL) by default in `main.dart`. **DO NOT** manually wrap widgets with `Directionality` or enforce RTL/LTR alignments manually unless it is an absolute edge-case necessity. Rely on Flutter's automatic directional rendering.
 - **Colors & Theming**: Always use context-based theme colors: `Theme.of(context).colorScheme.[colorProperty]`. Color definitions are in `lib/core/theme/app_colors.dart`, and configurations are in `lib/core/theme/app_theme.dart`.
 - **Typography**: Always use predefined styles from `lib/core/utils/app_styles.dart`.
 - **Images & Assets**: Always reference assets via the `lib/core/utils/app_images.dart` class.
@@ -48,5 +49,5 @@ This app supports **Dark and Light modes**. Hardcoded colors/styles are strictly
 ## 📝 7. Agent Workflow Execution
 1. **Analyze**: Check the folder structure and determine the layers needed.
 2. **Register Dependencies & Routes**: Before implementing the UI, declare the route names in `routes_name.dart`, map them in `app_routes.dart`, and set up any required DI factories/singletons in `getit_services.dart`.
-3. **Implement**: Write the feature code using `Retrofit`, `Theme.of(context)`, and `app_styles.dart`.
+3. **Implement**: Write the feature code using `Retrofit`, `Theme.of(context)`, and `app_styles.dart`. Let Flutter handle the RTL formatting automatically.
 4. **Refactor**: Automatically split large components into readable chunks.
