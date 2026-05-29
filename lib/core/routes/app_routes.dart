@@ -12,7 +12,7 @@ import 'package:tilawat/features/dashboard/presentation/views/dashboard_view.dar
 import 'package:tilawat/features/home/presentation/views/home_view.dart';
 import 'package:tilawat/features/splash/presentation/views/splash_view.dart';
 import 'package:tilawat/features/tilawah/domain/repos/tilawah_repo.dart';
-import 'package:tilawat/features/tilawah/presentation/cubits/tilawah_cubit.dart';
+import 'package:tilawat/features/tilawah/presentation/tilawah_cubit/tilawah_cubit.dart';
 
 class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

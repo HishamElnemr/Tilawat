@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tilawat/core/constants/api_constants.dart';
+import 'package:tilawat/core/services/audio_services.dart';
 import 'package:tilawat/core/services/auth_services.dart';
 import 'package:tilawat/core/services/get_data_services.dart';
 import 'package:tilawat/core/services/upload_data_services.dart';
@@ -30,4 +31,6 @@ void setup() {
   getIt.registerSingleton<TilawahRepo>(
     TilawahRepoImplementation(getDataServices: getIt<GetDataServices>()),
   );
+    getIt.registerSingleton<AudioServices>(AudioServices());
+
 }

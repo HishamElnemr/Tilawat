@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tilawat/core/widgets/section_header.dart';
-import 'package:tilawat/features/home/presentation/views/widgets/home_latest_recitations_listview.dart';
+import 'package:tilawat/features/home/presentation/views/widgets/recitations_section_bloc_builder.dart';
 
 class HomeLatestRecitationsSection extends StatelessWidget {
   const HomeLatestRecitationsSection({super.key});
@@ -9,13 +9,13 @@ class HomeLatestRecitationsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Padding(
+      children: [
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: SectionHeader(title: 'أحدث التلاوات'),
         ),
-        SizedBox(height: 12),
-        HomeLatestRecitationsListView(),
+        const SizedBox(height: 12),
+        RecitationsSectionBlocBuilder(),
       ],
     );
   }
