@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:just_audio/just_audio.dart';
 
 class AudioServices {
@@ -8,17 +10,28 @@ class AudioServices {
       await _player.setUrl(url);
       _player.play();
     } catch (e) {
-      print('Error playing audio: $e');
+      log('Error playing audio: $e');
     }
   }
 
-   Future<void> pauseAudio() async {
+
+  Future<void> pauseAudio() async {
     try {
       await _player.pause();
     } catch (e) {
-      print('Error pausing audio: $e');
+      log('Error pausing audio: $e');
     }
   }
 
+  Future<void> stopAudio() async {
+    try {
+      await _player.stop();
+    } catch (e) {
+      log('Error stopping audio: $e');
+    }
+  }
 
+  Future<void> dispose() async {
+    await _player.dispose();
+  }
 }

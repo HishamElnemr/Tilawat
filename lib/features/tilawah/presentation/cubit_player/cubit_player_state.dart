@@ -23,8 +23,17 @@ final class CubitPlayerPaused extends CubitPlayerState {
   CubitPlayerPaused(this.url);
 }
 
+final class CubitPlayerStopped extends CubitPlayerState {
+  final String url;
+
+  CubitPlayerStopped(this.url);
+}
+
+
 final class CubitPlayerFailure extends CubitPlayerState {
   final String errMessage;
 
   CubitPlayerFailure(this.errMessage);
 }
+
+
